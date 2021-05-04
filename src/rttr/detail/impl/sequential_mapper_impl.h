@@ -204,7 +204,8 @@ struct sequential_container_mapper_wrapper : iterator_wrapper_base<Tp>
                          !std::is_const<remove_reference_t<ReturnType>>::value, int> = 0>
     static bool set_value(void* container, std::size_t index, argument& value)
     {
-        if (value.get_type() == ::rttr::type::get<value_t>())
+        // TODO: updated by Atomontage
+        if (value.get_type() == ::rttr::type::get<value_t>() || ::rttr::type::get<value_t>() == ::rttr::type::get<::rttr::variant>())
         {
             base_class::get_value(get_container(container), index) = value.get_value<value_t>();
             return true;
@@ -221,7 +222,8 @@ struct sequential_container_mapper_wrapper : iterator_wrapper_base<Tp>
                          !std::is_const<remove_reference_t<ReturnType>>::value, int> = 0>
     static bool set_value(void* container, std::size_t index, argument& value)
     {
-        if (value.get_type() == ::rttr::type::get<value_t>())
+        // TODO: updated by Atomontage
+        if (value.get_type() == ::rttr::type::get<value_t>() || ::rttr::type::get<value_t>() == ::rttr::type::get<::rttr::variant>())
         {
             copy_array(value.get_value<value_t>(), base_class::get_value(get_container(container), index));
             return true;

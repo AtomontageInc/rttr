@@ -37,6 +37,11 @@ project ("rttr" LANGUAGES CXX)
 
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/CMake")
 
+if(EMSCRIPTEN)
+include(${CMAKE_TOOLCHAIN_FILE})
+set(CMAKE_CXX_FLAGS "-std=c++17 -s USE_SDL=2 -s USE_SDL_NET=2") # only this way worked for emscripten
+endif()
+
 if (CMAKE_BUILD_TYPE STREQUAL "")
   # CMake defaults to leaving CMAKE_BUILD_TYPE empty. This screws up
   # differentiation between debug and release builds.

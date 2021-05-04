@@ -198,8 +198,9 @@ struct associative_container_mapper_wrapper : iterator_wrapper_base<Tp>
     template<typename..., typename V = value_t, enable_if_t<!std::is_void<V>::value && !std::is_const<ConstType>::value, int> = 0>
     static bool insert_key_value(void* container, argument& key, argument& value, iterator_data& itr)
     {
+        // TODO: updated by Atomontage
         if (key.get_type() == ::rttr::type::get<key_t>() &&
-            value.get_type() == ::rttr::type::get<value_t>())
+            (value.get_type() == ::rttr::type::get<value_t>() || ::rttr::type::get<value_t>() == ::rttr::type::get<::rttr::variant>()))
         {
             auto ret = base_class::insert_key_value(get_container(container), key.get_value<key_t>(), value.get_value<value_t>());
             itr_wrapper::create(itr, ret.first);
