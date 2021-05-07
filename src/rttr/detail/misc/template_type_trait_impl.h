@@ -53,10 +53,10 @@ namespace rttr                                                                  
 {                                                                                                                                           \
 namespace detail                                                                                                                            \
 {                                                                                                                                           \
-    template<template <value_type...> class T, value_type...Args>                                                                           \
-    struct template_type_trait<T<Args...>> : std::true_type                                                                                 \
+    template<template <value_type> class T, value_type Arg>                                                                           \
+    struct template_type_trait<T<Arg>> : std::true_type                                                                                 \
     {                                                                                                                                       \
-        static std::vector<::rttr::type> get_template_arguments() { return { ::rttr::type::get<Args>()..., }; }                             \
+        static std::vector<::rttr::type> get_template_arguments() { return { ::rttr::type::get<value_type>() }; }                    \
     };                                                                                                                                      \
 }                                                                                                                                           \
 }
