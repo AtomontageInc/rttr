@@ -63,7 +63,7 @@ struct type_data;
  * This class contains all logic to register properties, methods etc.. for a specific type.
  * It is not part of the rttr API
  */
-class RTTR_LOCAL type_register_private
+class RTTR_API type_register_private
 {
 public:
 
