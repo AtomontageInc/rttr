@@ -595,6 +595,7 @@ namespace detail
      * A slightly different decay than in the standard, the extent of arrays are not removed.
      * Applies lvalue-to-rvalue, function-to-pointer implicit conversions to the type T and removes cv-qualifiers.
      */
+#if 0
     template<typename T>
     struct decay_except_array
     {
@@ -607,7 +608,24 @@ namespace detail
 
     template<typename T>
     using decay_except_array_t = typename decay_except_array<T>::type;
+#else
+    template<bool IsFunction>
+    struct decay_except_array
+    {
+        template <typename T>
+        using type = add_pointer_t<T>;
+    };
 
+    template<>
+    struct decay_except_array<false>
+    {
+        template <typename T>
+        using type = remove_cv_t<T>;
+    };
+
+    template<typename T>
+    using decay_except_array_t = typename decay_except_array<std::is_function<remove_reference_t<T>>::value>::template type<remove_reference_t<T>>;
+#endif
     /////////////////////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////
@@ -639,6 +657,19 @@ namespace detail
     // count the number of type in a variadic template list
     // e.g. count_type<int, std::tuple<bool, int, bool, int, int, std::string>>::value => 3
 
+#if RTTR_CXX_STD >= RTTR_CXX_17
+    template <typename T, typename Type_List>
+    struct count_type_impl;
+
+    template<typename T, typename... Tail>
+    struct count_type_impl<T, type_list<Tail...>>
+    {
+        static RTTR_CONSTEXPR_OR_CONST std::size_t value = (0 + ... + std::is_same_v<T, Tail>);
+    };
+
+    template<typename T, typename Type_List>
+    using count_type = std::integral_constant<std::size_t, count_type_impl<T, as_type_list_t<Type_List>>::value>;
+#else
     template <typename T, typename Type_List>
     struct count_type_impl;
 
@@ -662,6 +693,7 @@ namespace detail
 
     template<typename T, typename Type_List>
     using count_type = std::integral_constant<std::size_t, count_type_impl<T, as_type_list_t<Type_List>>::value>;
+#endif
 
 
     /////////////////////////////////////////////////////////////////////////////////////
@@ -725,6 +757,19 @@ namespace detail
     // Returns the number of elements in the type list \p T which satisfy the condition \p Condition.
     // e.g. count_if<is_enum_type, type_list<int, enum_data<E>, std::string>>::value => 1
 
+#if RTTR_CXX_STD >= RTTR_CXX_17
+    template<template<class> class Condition, typename T>
+    struct count_if_impl;
+
+    template<template<class> class Condition, typename...TArgs>
+    struct count_if_impl<Condition, type_list<TArgs...>>
+    {
+        static RTTR_CONSTEXPR_OR_CONST std::size_t value = (0 + ... + Condition<TArgs>::value);
+    };
+
+    template<template<class> class Condition, typename...TArgs>
+    using count_if = std::integral_constant<std::size_t, count_if_impl<Condition, type_list< raw_type_t<TArgs>... > >::value>;
+#else
     template<template<class> class Condition, typename T, typename Enable = void>
     struct count_if_impl;
 
@@ -748,6 +793,7 @@ namespace detail
 
     template<template<class> class Condition, typename...TArgs>
     using count_if = std::integral_constant<std::size_t, count_if_impl<Condition, type_list< raw_type_t<TArgs>... > >::value>;
+#endif
 
     /////////////////////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////
