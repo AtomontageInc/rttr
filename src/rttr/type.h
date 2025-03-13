@@ -672,14 +672,24 @@ class RTTR_API type
         array_range<constructor> get_constructors(filter_items filter) const RTTR_NOEXCEPT;
 
         /*!
-         * \brief Creates an instance of the current type, with the given arguments \p args for the constructor.
+         * \brief Creates an instance of the current type using a constructor without arguments.
          *
-         * \remark When the argument types does not match the parameter list of the constructor then the he will not be invoked.
+         * \remark When the argument types does not match the parameter list of the constructor then he will not be invoked.
          *         Constructors with registered \ref default_arguments will be honored.
          *
          * \return Returns an instance of the given type.
          */
-        variant create(std::vector<argument> args = std::vector<argument>()) const;
+        variant create() const;
+
+        /*!
+         * \brief Creates an instance of the current type, with the given arguments \p args for the constructor.
+         *
+         * \remark When the argument types does not match the parameter list of the constructor then he will not be invoked.
+         *         Constructors with registered \ref default_arguments will be honored.
+         *
+         * \return Returns an instance of the given type.
+         */
+        variant create(std::vector<argument> args) const;
 
         /*!
          * \brief Returns the corresponding destructor for this type.

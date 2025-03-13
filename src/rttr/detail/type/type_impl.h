@@ -406,6 +406,13 @@ RTTR_INLINE bool type::is_base_of() const RTTR_NOEXCEPT
 
 /////////////////////////////////////////////////////////////////////////////////////////
 
+RTTR_INLINE variant type::create() const
+{
+    return create(std::vector<argument>());
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////
+
 template<typename F>
 RTTR_INLINE void type::register_converter_func(F func)
 {
