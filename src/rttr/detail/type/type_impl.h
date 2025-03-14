@@ -399,9 +399,9 @@ RTTR_INLINE bool type::is_derived_from() const RTTR_NOEXCEPT
 /////////////////////////////////////////////////////////////////////////////////////////
 
 template<typename T>
-RTTR_INLINE bool type::is_base_of() const RTTR_NOEXCEPT
+RTTR_INLINE bool type::is_base_of(const bool strict) const RTTR_NOEXCEPT
 {
-    return is_base_of(type::get<T>());
+    return is_base_of(type::get<T>(), strict);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////

@@ -92,13 +92,13 @@ bool type::is_derived_from(const type& other) const RTTR_NOEXCEPT
 
 /////////////////////////////////////////////////////////////////////////////////////////
 
-bool type::is_base_of(const type& other) const RTTR_NOEXCEPT
+bool type::is_base_of(const type& other, const bool strict) const RTTR_NOEXCEPT
 {
     auto& src_raw_type = m_type_data->raw_type_data;
     auto& tgt_raw_type = other.m_type_data->raw_type_data;
 
     if (src_raw_type == tgt_raw_type)
-        return true;
+        return !strict;
 
     for (auto& t : src_raw_type->m_class_data.m_derived_types)
     {

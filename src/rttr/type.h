@@ -539,6 +539,8 @@ class RTTR_API type
 
         /*!
          * \brief Returns true if this type is the base class from the given type \p other, otherwise false.
+         *        Optionally you can request a strict check. This means that if this type is the same the other
+         *        type the result will be false. By default the function returns true if the two types are the same.
          *
          * \remark Make sure that the complete class hierarchy has the macro RTTR_ENABLE
          *         inside the class declaration, otherwise the returned information of this function
@@ -546,10 +548,12 @@ class RTTR_API type
          *
          * \return Returns true if this type is a base class type from \p other, otherwise false.
          */
-        bool is_base_of(const type& other) const RTTR_NOEXCEPT;
+        bool is_base_of(const type& other, const bool strict = false) const RTTR_NOEXCEPT;
 
          /*!
          * \brief Returns true if this type is the base class from the given type \a T, otherwise false.
+         *        Optionally you can request a strict check. This means that if this type is the same the other
+         *        type the result will be false. By default the function returns true if the two types are the same.
          *
          * \remark Make sure that the complete class hierarchy has the macro RTTR_ENABLE
          *         inside the class declaration, otherwise the returned information of this function
@@ -558,7 +562,7 @@ class RTTR_API type
          * \return Returns true if this type is a base class type from \a T, otherwise false.
          */
         template<typename T>
-        bool is_base_of() const RTTR_NOEXCEPT;
+        bool is_base_of(const bool strict = false) const RTTR_NOEXCEPT;
 
         /*!
          * \brief Returns a range of all base classes of this type.
